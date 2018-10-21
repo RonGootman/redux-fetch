@@ -3,9 +3,9 @@ import { createReducer, defaultReducer, compressReducer } from './utils'
 export default class ReduxFetch {
   constructor(namespace, { initState = {}, reducer = {} }) {
     this.types = {
-      process: `@@ReduxFetch [${this.namespace}] FETCH IS PROCESS`,
-      success: `@@ReduxFetch [${this.namespace}] FETCH IS SUCCESS`,
-      fail: `@@ReduxFetch [${this.namespace}] FETCH IS FAIL`
+      process: `@@ReduxFetch [${namespace}] FETCH IS PROCESS`,
+      success: `@@ReduxFetch [${namespace}] FETCH IS SUCCESS`,
+      fail: `@@ReduxFetch [${namespace}] FETCH IS FAIL`
     }
   }
 
