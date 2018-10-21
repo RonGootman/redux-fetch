@@ -1,20 +1,30 @@
-import {
-  ActionTypes,
-  CreateFetchActions,
-  createReducer,
-  defaultReducer,
-  compressReducer
-} from './utils'
+import { createReducer, defaultReducer, compressReducer } from './utils'
 
 export default class ReduxFetch {
-  constructor(namespace, { initState = {}, reducer = {}, reducers = [] }) {
-    this.types = new ActionTypes(namespace)
-    this.actions = new CreateFetchActions(this.types)
-    this.reducer = createReducer(
+  constructor(namespace, { initState = {}, reducer = {} }) {
+    this.types = {
+      process: `@@ReduxFetch [${this.namespace}] FETCH IS PROCESS`,
+      success: `@@ReduxFetch [${this.namespace}] FETCH IS SUCCESS`,
+      fail: `@@ReduxFetch [${this.namespace}] FETCH IS FAIL`
+    }
+  }
+
+  reducer() {
+    return createReducer(
       { data: {}, isProcessing: true, ...initState },
-      [defaultReducer, reducer, ...reducers].map(r =>
-        compressReducer(r, this.types)
-      )
+      [defaultReducer, reducer].map(r => compressReducer(r, this.types))
     )
+  }
+
+  process() {
+    return { type: this.types.process }
+  }
+
+  success(data) {
+    return { type: this.types.success, data }
+  }
+
+  fail() {
+    return { type: this.types.fail }
   }
 }
