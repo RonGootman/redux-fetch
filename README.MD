@@ -79,6 +79,6 @@ export const getTodosThunk = () => next => {
     next(todos.process())
     getTodosAsync()
         .then(data => next(todos.success(data)))
-        .cath(error => next(todos.fail()))
+        .catch(error => next(todos.fail()))
 }
 ```
