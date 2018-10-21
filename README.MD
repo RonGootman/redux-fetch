@@ -6,13 +6,13 @@ I don't need to explain why redux is awesome, But dealing with async operations 
 ### Problem
 Usually each async operation requires:
 
-Action Types - 3 constants (processs, success, fail).
+Action Types - constants (processs, success, fail).
 ```js
 const FETCH_PREFIX_PROCESS = '[PREFIX] FETCH_PREFIX_PROCESS'
 const FETCH_PREFIX_SUCCESS = '[PREFIX] FETCH_PREFIX_SUCCESS'
 const FETCH_PREFIX_FAIL = '[PREFIX] FETCH_PREFIX_FAIL'
 ```
-Action Creators = 3 function that returen a plain object with type and payload.
+Action Creators = functions that return a plain object with type and payload.
 ```js
 cosnt fetchPrefixSuccess = (data) => ({
     type: FETCH_PREFIX_SUCCESS,
@@ -21,8 +21,7 @@ cosnt fetchPrefixSuccess = (data) => ({
 cosnt fetchPrefixProcess = () =>  ({type: FETCH_PREFIX_SUCCESS})
 cosnt fetchPrefixFail = () =>  ({type: FETCH_PREFIX_FAIL})
 ```
-Reducer - repeativly behaivor, probably update data on state and set boolean flag to indicate
-the fetch status.
+Reducer - Repeatedly behavior, probably update data on state and set a flag to indicate fetch status.
 ```js
 const prefixReducer = (state = { data: {}, isProcessing: false }, action) => {
   switch (action.type) {
@@ -56,16 +55,30 @@ import ReduxFetch from 'redux-fetch'
 export default new ReduxFetch('todos')
 ```
 
-## implemntation
-ReduxFetch automaticly generate the a reducer for you. Definitely can expand the reducer ( API - LINK ).
+# Implementation
+
+ReduxFetch automaticly generate reducer for you. Definitely you can expand the reducer (API Guide).
 
 ```js
 import { combineReducers } from 'redux';
-import todos from '../todos'
+import todos from './todos'
 
 const applicationReducer = combineReducers({
-  todos: todos.reducer
+  todos: todos.reducer()
 })
 ```
 
 
+ReduxFetch automaticly generate action creators for you. (redux-thunk example)
+
+```js
+import { getTodosAsync } from ...
+import todos from './todos'
+
+export const getTodosThunk = () => next => {
+    next(todos.process())
+    getTodosAsync()
+        .then(data => next(todos.success(data)))
+        .cath(error => next(todos.fail()))
+}
+```
